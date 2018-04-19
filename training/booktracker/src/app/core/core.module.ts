@@ -6,6 +6,12 @@ import { DataService } from './data.service';
 import { PlainLoggerService } from "./plain-logger.service";
 import { throwIfAlreadyLoaded } from "app/core/module-import-guard";
 import { BookTrackerErrorHandlerService } from './book-tracker-error-handler.service';
+import { BooksResolverService } from 'app/core/books-resolver.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AddHeaderInterceptor } from 'app/core/add-header.interceptor';
+import { LogResponseInterceptor } from './log-response.interceptor';
+import { HttpCacheService } from './http-cache.service';
+import { CacheInterceptor } from 'app/core/cache.interceptor';
 
 
 @NgModule({
@@ -16,7 +22,13 @@ import { BookTrackerErrorHandlerService } from './book-tracker-error-handler.ser
   providers: [
     LoggerService, 
     DataService, 
-    { provide: ErrorHandler, useClass: BookTrackerErrorHandlerService }
+    { provide: ErrorHandler, useClass: BookTrackerErrorHandlerService },
+    { provide: HTTP_INTERCEPTORS, useClass: AddHeaderInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LogResponseInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
+    BooksResolverService,
+    HttpCacheService
+    
   ]
 })
 export class CoreModule {

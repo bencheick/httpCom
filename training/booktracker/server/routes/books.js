@@ -7,7 +7,8 @@ var router = express.Router();
 router.route('/')
     .get(function(req, res) {
         var data = getBookData();
-        res.send(data);
+        //res.send(data);
+        setTimeout(() => res.send(data), 2000); // artificially slow down this request
     })
 
     .post(function(req, res) {

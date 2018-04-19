@@ -64,7 +64,7 @@ app.use(function(err, req, res, next) {
 
 var debug = require('debug')('server');
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3500);
 
 app.listen(app.get('port'));
 
